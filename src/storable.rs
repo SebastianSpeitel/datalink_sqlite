@@ -25,7 +25,7 @@ impl<D: Data + Unique> Storable for D {
 mod tests {
     use super::*;
     use crate::database::Database;
-    use datalink::data::DataExt;
+    use datalink::DataExt;
 
     #[test]
     fn test_storable() {

@@ -158,7 +158,7 @@ impl Migration<2> {
 mod tests {
     use std::str::FromStr;
 
-    use datalink::{data::DataExt, Data};
+    use datalink::{Data, DataExt};
 
     use super::*;
     use crate::database::Database;
@@ -190,6 +190,8 @@ mod tests {
 
     #[test]
     fn no_data_loss() {
+        env_logger::builder().is_test(true).try_init().ok();
+
         let db = Database::open_in_memory().unwrap();
         let mut migrations = migrate(&db);
 
@@ -218,12 +220,15 @@ mod tests {
         let items = data.as_items();
         let list = data.as_list();
 
-        dbg!(&data);
+        // dbg!(&data);
         dbg!(&items);
         dbg!(&list);
 
         assert_eq!(data.get_id(), Some("1".parse().unwrap()));
         assert_eq!(items.len(), 2);
+
+        dbg!(core::any::type_name_of_val(&items[1].0));
+        dbg!(&items[1].0);
 
         assert_eq!(items[1].0.as_string().unwrap(), "key");
         assert_eq!(items[1].1.as_bool().unwrap(), true);

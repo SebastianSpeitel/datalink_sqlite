@@ -319,6 +319,7 @@ macro_rules! insert_impl {
                 ";"
             );
             let mut stmt = self.tx.prepare_cached(SQL).unwrap();
+
             stmt.execute(params![self.id.as_id(), value]).unwrap();
         }
     };
@@ -357,7 +358,7 @@ impl<ID: AsID> Receiver for Upserter<'_, ID> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use datalink::data::DataExt;
+    use datalink::DataExt;
 
     fn test_db() -> Database {
         let db = Database::open_in_memory().unwrap();
@@ -384,7 +385,7 @@ mod tests {
         let data = true.into_unique_random();
         let stored = db.store(&data).unwrap();
 
-        dbg!(&db as &ErasedData);
+        dbg!(&stored as &ErasedData);
 
         assert_eq!(true, stored.as_bool().unwrap());
     }

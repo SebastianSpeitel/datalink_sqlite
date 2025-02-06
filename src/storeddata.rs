@@ -279,7 +279,7 @@ impl<'a, T> RequestedLink<'a, T> {
 
 impl<'a, T> Data for RequestedLink<'a, T>
 where
-    T: rusqlite::types::FromSql + datalink::Link<'a>,
+    T: rusqlite::types::FromSql + datalink::Link<'a, 'a>,
 {
     fn query(&self, request: &mut impl Request) {
         self.query_owned(request);
@@ -327,7 +327,7 @@ mod tests {
 
     use super::*;
     use crate::database::Database;
-    use datalink::data::DataExt;
+    use datalink::DataExt;
 
     #[test]
     fn in_out() {
